@@ -1,5 +1,5 @@
 import { integer, text, sqliteTable } from "drizzle-orm/sqlite-core"
-import { InferModel  } from "drizzle-orm";
+import { InferSelectModel  } from "drizzle-orm";
 
 export const todos = sqliteTable("todos" ,{
     id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
@@ -7,4 +7,4 @@ export const todos = sqliteTable("todos" ,{
     completed: integer("completed", { mode: "boolean" }).notNull().default(false),
 }) 
 
-export type Todo = InferModel<typeof todos>
+export type Todo = InferSelectModel<typeof todos>

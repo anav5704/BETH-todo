@@ -1,6 +1,9 @@
 import { Elysia, t } from "elysia"
-import { html } from '@elysiajs/html'
+import { html } from "@elysiajs/html"
 import * as elements from "typed-html"
+import { Todo, todos } from "./db/schema"
+import { db } from "./db"
+import { eq } from "drizzle-orm"
 
 const app = new Elysia().use(html())
 
@@ -13,16 +16,14 @@ app.get("/", ({ html }) =>
     ))
 
 // Routes  
-app.get("/todos", () => <ToDoList todos={db} />)
+app.get("/todos", async () => {
+    const data = await db.select().from(todos).all()
+    return <ToDoList todos={data} />
+})
 
-app.post("/todos    ", ({ body }) => {
+app.post("/todos", async ({ body }) => {
     if (body.content.length === 0) throw new Error("Content cannot be empty")
-    const newTodo = {
-        id: db.length ++,
-        content: body.content,
-        completed: false,
-    }
-    db.push(newTodo)
+    const newTodo = await db.insert(todos).values(body).returning().get()
     return <ToDoItem {...newTodo} />
 },
     {
@@ -31,12 +32,21 @@ app.post("/todos    ", ({ body }) => {
         })
     })
 
-app.post("/todos/toggle/:id", ({ params }) => {
-    const todo = db.find((todo) => todo.id === params.id)
-    if (todo) {
-        todo.completed = !todo.completed
-        return <ToDoItem {...todo} />
-    }
+app.post("/todos/toggle/:id", async ({ params }) => {
+    const Oldodo = await db
+        .select()
+        .from(todos)
+        .where(eq(todos.id, params.id))
+        .get()
+
+    const newTodo = await db
+        .update(todos)
+        .set({ completed: !Oldodo?.completed })
+        .where(eq(todos.id, params.id))
+        .returning()
+        .get()
+
+    return <ToDoItem {...newTodo} />
 },
     {
         params: t.Object({
@@ -44,9 +54,8 @@ app.post("/todos/toggle/:id", ({ params }) => {
         })
     })
 
-app.delete("/todos/:id", ({ params }) => {
-    const todo = db.find((todo) => todo.id === params.id)
-    if (todo) db.filter((todo) => todo.id !== params.id)
+app.delete("/todos/:id", async ({ params }) => {
+    await db.delete(todos).where(eq(todos.id, params.id)).run()
 },
     {
         params: t.Object({
@@ -74,18 +83,7 @@ const BaseHtml = ({ children }: elements.Children) => `
     </html>
 `
 
-type ToDo = {
-    id: number,
-    content: string,
-    completed: boolean,
-}
 
-const db: ToDo[] = [
-    { id: 1, content: "eat food", completed: false },
-    { id: 2, content: "eat food", completed: false },
-    { id: 3, content: "sleep", completed: false },
-    { id: 4, content: "wake up", completed: true }
-]
 
 const ToDoItem = ({ id, content, completed }: ToDo) => {
     return (
@@ -104,7 +102,7 @@ const ToDoList = ({ todos }: { todos: ToDo[] }) => {
             {todos.map((todo) => (
                 <ToDoItem {...todo} />
             ))}
-        <ToDoForm />
+            <ToDoForm />
         </div>
     )
 }
