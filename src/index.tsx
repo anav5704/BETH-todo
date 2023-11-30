@@ -107,7 +107,7 @@ const ToDoList = ({ todos }: { todos: ToDo[] }) => {
 
 const ToDoForm = () => {
     return (
-        <form hx-post="/todos" hx-swap="beforebegin" class="flex flex-col space-y-3">
+        <form _="on submit target.reset()" hx-post="/todos" hx-swap="beforebegin" class="flex flex-col space-y-3">
             <input class="py-1 border" type="text" name="content" />
             <button type="submit" class="border rounded-md px-6 py-1 bg-green-500 text-white hover:bg-green-600">Create</button>
         </form>
