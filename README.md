@@ -9,6 +9,7 @@ This is a simple, and my first todo app made with the BETH stack. Was nice being
 - Elysia JS - Express JS but faster
 - Turso - Edge Sqlite database
 - HTMX - HTML with fancy attributes
--  HyperScript - inline JS
--  TaileindCSS - inline CSS
+- Drizzle ORM - Not as good as Prisma
+-  HyperScript - Inline JS
+-  TaileindCSS - Inline CSS
 
