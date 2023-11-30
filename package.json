@@ -2,11 +2,12 @@
   "name": "beth-todo",
   "module": "index.ts",
   "type": "module",
-    "scripts": {
+  "scripts": {
     "start": "bun run --watch index.ts"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "typed-html": "^3.0.1"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
