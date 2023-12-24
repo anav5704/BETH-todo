@@ -2,7 +2,7 @@
 
 ![hero page](https://github.com/anav5704/BETH-todo/blob/main/docs/beth-todo.png)
 
-This is a simple, and my first todo app made with the BETH stack. Was nice being able to try out Bun and HTMX, I enjoyed working with them.
+This is a simple, and my first todo app made with the BETH stack. Was nice being able to try out Bun and HTMX, I enjoyed working with them. Yes, Bun add is way faster than npm install.
 
 ## Technologies Used
 
@@ -16,7 +16,7 @@ This is a simple, and my first todo app made with the BETH stack. Was nice being
 
 ## Getting Started
 
-First make sure you hav ```bun``` installed. It is currenlty only on macOS and Linux, and if you're on Windows, you'll have to setup [WSL](https://learn.microsoft.com/en-us/windows/wsl/install). Once that is setup, fork and clone this repo. Then run ```bun install``` to install the dependencies. Now make a ```.env``` file in the root of your project add add the following variables:
+First, make sure you have ```bun``` installed. It is currently only on macOS and Linux, and if you're on Windows, you'll have to set up [WSL](https://learn.microsoft.com/en-us/windows/wsl/install). Once that is set up, fork and clone this repo. Then run ```bun install``` to install the dependencies. Now make a ```.env``` file in the root of your project and add the following variables:
 
 ```
 DATABASE_URL
